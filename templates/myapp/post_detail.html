@@ -1,10 +1,15 @@
 <!-- myapp/post_detail.html -->
 
+<!-- オブジェクト（記事）のタイトルの表示 -->
 <h1>{{ object.title }}</h1>
+<!-- オブジェクトの作られた日にち -->
 <p>{{ object.published_at|date }}</p>
+<!-- カテゴリーの名前 -->
 <p>{{ object.category.name }}</p>
+<!-- タグを表示（登録されているタグ全て） -->
 {% for tag in object.tags.all %}
-{{ tag.name }}
+    {{ tag.name }}
 {% endfor %}
 <hr>
+<!-- 記事内容 -->
 {{ object.content|safe }}
