@@ -8,7 +8,7 @@
 <p>{{ object.category.name }}</p>
 <!-- タグを表示（登録されているタグ全て） -->
 {% for tag in object.tags.all %}
-    {{ tag.name }}
+{{ tag.name }}
 {% endfor %}
 <hr>
 <!-- 記事内容 -->

@@ -62,7 +62,7 @@ class TagPostView(ListView):
     def get_queryset(self):
         tag_slug = self.kwargs['tag_slug']
         self.tag = get_object_or_404(Tag, slug=tag_slug)
-        qs = super().get_queryset().filter(tags=self.tag)
+        qs = super().get_queryset().filter(tag=self.tag)
         return qs
 
     def get_context_data(self, **kwargs):

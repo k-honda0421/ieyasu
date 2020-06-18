@@ -4,7 +4,7 @@
 <ul>
     {% for post in object_list %}
     {% if user.authenticated or post.is_public %}
-    <li>{% if not post.is_public %}「下書き」{% endif %}<a href="{% url 'myapp:post_detail' post.id %}"></a></li>
+    <li>{% if not post.is_public %}「下書き」{% endif %}<a href="{% url 'myapp:post_detail' post.id %}">{{ post.title }}</a></li>
     {% else %}
     <li>投稿はありません。</li>
     {% endif %}
