@@ -1,14 +1,11 @@
 # myapp/urls.py
-
+from . import views
 from django.urls import path
 
 from myapp.views import (
     IndexView,
     PostDetailView,
-    CategoryListView,
-    TagListView,
-    TagPostView,
-    CategoryPostView
+    PostInput,
 )
 app_name = 'myapp'
 urlpatterns = [
@@ -16,13 +13,6 @@ urlpatterns = [
     path('', IndexView.as_view(), name='index'),
     # 記事のURL
     path('post/<int:pk>/', PostDetailView.as_view(), name='post_detail'),
-    # カテゴリー一覧のURL
-    path('categories/', CategoryListView.as_view(), name='category_list'),
-    # タグ一覧のURL
-    path('tags/', TagListView.as_view(), name='tag_list'),
-    # カテゴリに紐づいた記事の一覧のURL
-    path('category/<str:category_slug>/',
-        CategoryPostView.as_view(), name='category_post'),
-    # タグに紐づいた記事の一覧のURL
-    path('tag/<str:tag_slug>/',TagPostView.as_view(),name='tag_post'),
+    # 投稿サイトのURL
+    path('post_form/', PostInput.as_view(), name='post_form',),
 ]

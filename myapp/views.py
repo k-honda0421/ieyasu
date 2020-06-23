@@ -1,71 +1,40 @@
 from django.db.models import Count,Q
-from django.shortcuts import render, get_object_or_404
-from django.http import Http404
+from django.shortcuts import get_object_or_404, redirect, render
+from django.http import Http404, HttpResponse, request
 from django.views.generic.detail import DetailView
+from django.views import View
 from django.views.generic.list import ListView
+from django.urls import reverse_lazy
 
-from myapp.models import Post, Category, Tag
+from myapp.models import Post
+from myapp.form import PostCreate
 
 class PostDetailView(DetailView):
     model = Post
+    template_name = 'myapp/post_detail.html'
+    context_object_name = "posts"
 
-    # オブジェクトを取得するためのメソッド
-    def get_object(self, queryset=None):
-        obj = super().get_object(queryset=queryset)
-        # 記事が公開されていない、ユーザーの登録もない場合４０４エラー
-        if not obj.is_public and not self.request.user.is_authenticated:
-            raise Http404
-        return obj
-
-
+    def get_queryset(self):
+        return Post.objects.all()
+        
 # 記事一覧のビュー
 class IndexView(ListView):
     model = Post
     # ↓にテーンプレート名が入る
     template_name = 'myapp/index.html'
 
-# カテゴリー一覧のビュー
-class CategoryListView(ListView):
-    # 公開されている記事のカテゴリ数ーを取得する
-    queryset = Category.objects.annotate(
-        num_posts=Count('post', filter=Q(post__is_public=True)))
+class PostInput(View):
+    def get(self, request, *args, **kwargs):
+        return render(request, 'blog/post_form.html', {'form': PostCreate})
 
-# タグ一覧のビュー
-class TagListView(ListView):
-    # 公開されている記事のタグ数を取得している
-    queryset = Tag.objects.annotate(
-        num_posts=Count('post', filter=Q(post__is_public=True)))
+    def post(self, request, *args, **kwargs):
+        # formに描いた内容を格納する
+        form = PostCreate(request.POST)
+        # 保存する前に一旦取り出す
+        post = form.save(commit=False)
+        # 保存
+        post.save()
+        # ホームに移動
+        return redirect(to='http://127.0.0.1:8000/')
 
-# カテゴリに紐づいた記事の一覧のビュー
-class CategoryPostView(ListView):
-    model = Post
-    template_name = 'myapp/category_post.html'
 
-    # カテゴリに紐づいた記事を取得するメソッド
-    def get_queryset(self):
-        category_slug = self.kwargs['category_slug']
-        self.category = get_object_or_404(Category, slug=category_slug)
-        qs = super().get_queryset().filter(category=self.category)
-        return qs
-
-    # 上記メソッドで取得したデータをテンプレートへ渡すメソッド
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['category'] = self.category
-        return context
-
-# タグに紐づいた記事の一覧のビュー
-class TagPostView(ListView):
-    model = Post
-    template_name = 'myapp/tag_post.html'
-
-    def get_queryset(self):
-        tag_slug = self.kwargs['tag_slug']
-        self.tag = get_object_or_404(Tag, slug=tag_slug)
-        qs = super().get_queryset().filter(tag=self.tag)
-        return qs
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['tag'] = self.tag
-        return context
