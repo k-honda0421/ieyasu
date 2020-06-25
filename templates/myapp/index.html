@@ -1,5 +1,16 @@
 <!-- myapp/index.html -->
-
+<body>
+    {% if user.id  %}
+    <p>ログインしました．</p>
+    <p>こんにちは!，{{ user.username }}さん</p>
+    <a href="{% url 'myapp:logout' %}">ログアウト</a>
+    <a href="{% url 'myapp:post_form' %}">新規投稿</a>
+    {% else %}
+    <a href="{% url 'myapp:login_form' %}">ログイン</a>
+    <a href="{% url 'myapp:signin_form' %}">アカウント作成</a>
+    <p>投稿機能、投稿一覧はログインしないと使えませんぞよ！</p>
+    {% endif %}
+</body>
 <h1>投稿一覧</h1>
 <ul>
     <!-- ログインされているか、記事が公開されているかTrueなら表示 -->

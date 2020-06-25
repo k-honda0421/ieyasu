@@ -127,3 +127,8 @@ STATIC_URL = '/static/'
 STATIC_DIR = [
     os.path.join(BASE_DIR, 'static')
 ]
+LOGIN_URL = 'myapp:login_form'     # ログイン
+LOGOUT_URL = 'myapp:logout'   # ログアウト
+
+LOGIN_REDIRECT_URL = 'myapp:index'      # ログイン
+LOGOUT_REDIRECT_URL = 'myapp:index'    # ログアウト

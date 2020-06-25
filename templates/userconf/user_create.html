@@ -1,0 +1,15 @@
+<body>
+    <form method="POST" action="{% url 'myapp:signin_form' %}">
+        {% csrf_token %}
+        <label>ユーザーID</label>
+        {{ form.username }}
+        {{ form.username.errors }}
+        <label>パスワード</label>
+        {{ form.password1 }}
+        {{ form.password1.errors }}
+        <label>パスワード（確認）</label>
+        {{ form.password2 }}
+        {{ form.password2.erors }}
+        <button type="submit">登録</button>
+    </form>
+</body>
