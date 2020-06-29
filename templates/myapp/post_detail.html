@@ -2,6 +2,7 @@
 
 <!-- オブジェクト（記事）のタイトルの表示 -->
 <h1>{{ posts.title }}</h1>
+<p>カテゴリ：{{ posts.category }}</p>
 <!-- 記事内容 -->
 <p>{{ posts.text }}</p>
 <a href="{% url 'myapp:index' %}">投稿一覧</a>

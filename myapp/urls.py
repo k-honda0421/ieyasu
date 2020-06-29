@@ -8,7 +8,9 @@ from myapp.views import (
     PostDetailView,
     PostInput,
     CreateAccount,
-    AccountLogin
+    AccountLogin,
+    CategoryListView,
+    CategoryPostView
 )
 app_name = 'myapp'
 urlpatterns = [
@@ -24,4 +26,8 @@ urlpatterns = [
     path('login/', AccountLogin.as_view(), name='login_form'),
     # ログアウト
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
+    # カテゴリに紐づく投稿一覧
+    path('categories/', CategoryListView.as_view(), name='category_list'),
+    # カテゴリ一覧
+    path('category/<str:category_id>/',CategoryPostView.as_view(),name='category_post'),
 ]

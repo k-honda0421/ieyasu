@@ -9,7 +9,7 @@ from django.urls import reverse_lazy
 from django.views.generic import CreateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 
-from myapp.models import Post
+from myapp.models import Post, Category
 from myapp.form import PostCreate, UserCreateForm,LoginForm
 from django.contrib.auth.models import User
 
@@ -77,3 +77,23 @@ class AccountLogin(View):
         form = LoginForm(request.POST)
         return render(request, 'userconf/login.html', {'form': form, })
 account_login = AccountLogin.as_view()
+
+class CategoryListView(ListView, LoginRequiredMixin):
+    queryset = Category.objects.annotate(
+        num_posts=Count('post')
+    )
+
+class CategoryPostView(ListView, LoginRequiredMixin):
+    model = Post
+    template_name = 'myapp/category_post.html'
+
+    def get_queryset(self):
+        category_id = self.kwargs['category_id']
+        self.category = get_object_or_404(Category,id=category_id)
+        qs = super().get_queryset().filter(category=self.category)
+        return qs
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['category'] = self.category
+        return context
