@@ -3,6 +3,6 @@
     {% for category in object_list %}
     <li><a href="{% url 'myapp:category_post' category.id %}">{{ category.name }}({{ category.num_posts }})</a></li>
     {% empty %}
-    <li>カテゴリはありません。</li>
+    <p>カテゴリはありません。</p>
     {% endfor %}
 </ul>

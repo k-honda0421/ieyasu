@@ -10,7 +10,9 @@ from myapp.views import (
     CreateAccount,
     AccountLogin,
     CategoryListView,
-    CategoryPostView
+    CategoryPostView,
+    PostUpdate,
+    PostDelete
 )
 app_name = 'myapp'
 urlpatterns = [
@@ -29,5 +31,9 @@ urlpatterns = [
     # カテゴリに紐づく投稿一覧
     path('categories/', CategoryListView.as_view(), name='category_list'),
     # カテゴリ一覧
-    path('category/<str:category_id>/',CategoryPostView.as_view(),name='category_post'),
+    path('category/<str:category_id>/', CategoryPostView.as_view(), name='category_post'),
+    # 投稿編集
+    path('update/<int:pk>/', PostUpdate.as_view(), name='update'),
+    # 削除
+    path('delete/<int:pk>', PostDelete.as_view(), name='delete'),
 ]

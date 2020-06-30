@@ -5,4 +5,6 @@
 <p>カテゴリ：{{ posts.category }}</p>
 <!-- 記事内容 -->
 <p>{{ posts.text }}</p>
+<a href="{% url 'myapp:update' posts.id %}">編集</a>
+<a href="{% url 'myapp:delete' posts.id %}">削除</a>
 <a href="{% url 'myapp:index' %}">投稿一覧</a>

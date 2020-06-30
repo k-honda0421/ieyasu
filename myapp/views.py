@@ -6,7 +6,7 @@ from django.contrib.auth import login, authenticate
 from django.views import View
 from django.views.generic.list import ListView
 from django.urls import reverse_lazy
-from django.views.generic import CreateView
+from django.views.generic import CreateView, UpdateView,DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 from myapp.models import Post, Category
@@ -41,6 +41,21 @@ class PostInput(View, LoginRequiredMixin):
         post.save()
         # ホームに移動
         return redirect(to='http://127.0.0.1:8000/')
+
+# 編集
+class PostUpdate(UpdateView):
+    model = Post
+    form_class = PostCreate
+    template_name = "blog/post_form.html"
+    success_url = "myapp:index"
+
+# 削除
+class PostDelete(DeleteView):
+    model = Post
+    template_name = 'myapp/delete.html'
+    # reverse_lazyはクラスベースで用いる
+    # renderはメソッドベースで用いる
+    success_url = reverse_lazy('myapp:index')
 
 #アカウント作成
 class CreateAccount(CreateView):
@@ -83,6 +98,7 @@ class CategoryListView(ListView, LoginRequiredMixin):
         num_posts=Count('post')
     )
 
+# カテゴリーに紐づく記事を取得
 class CategoryPostView(ListView, LoginRequiredMixin):
     model = Post
     template_name = 'myapp/category_post.html'
